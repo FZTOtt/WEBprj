@@ -1,0 +1,184 @@
+main > .container {
+    padding: 60px 15px 0;
+  }
+
+
+.question{
+	border: 1px solid gray;
+	margin-top: 20px;
+	border-radius: 10px;
+	padding: 20px;
+}
+
+.question-image{
+	max-width: 150px;
+	max-height: 150px;
+	align-items: center;
+}
+
+.question-title{
+	font-size: 20px;
+	font-weight: bold;
+}
+
+.tags{
+	max-width: 300px;
+}
+
+.tags span{
+	margin: 0px 10px 10px 0px;
+	font-size: 20px;
+}
+
+.users p{
+	margin-left: 10px;
+	font-family:Georgia, 'Times New Roman', Times, serif;
+	font-style: italic;
+}
+
+.icons-container{
+	padding-top: 10px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.likes{
+	color: greenyellow;
+	margin-left: 20px;
+	margin-right: 20px;
+}
+
+.image{
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+}
+
+.sidkies {
+
+}
+
+.desc{
+	display: flex;
+	gap: 5px;
+}
+
+.power{
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.info{
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.name{
+	text-align: center;
+	color: white;
+}
+
+.avatar-image{
+	max-width: 50px;
+	max-height: 50px;
+}
+
+.info-container{
+	display: flex;
+	gap: 10px;
+	margin-left: 10px;
+}
+
+header{
+	margin-bottom: 20px;
+}
+
+.HQ{
+	display: flex;
+	align-items: center;
+	gap: 20px
+}
+
+.paginatium{
+	margin: 40px;
+}
+.paginatium button{
+	margin-right: 2px;
+	height: 30px;
+	width: 30px;
+	background-color: bisque;
+	text-align: center;
+	padding: 0px 0px 0px 0px;
+	font-family: 'Times New Roman', Times, serif;
+}
+
+.forma div{
+	display: flex;
+	gap: 10px;
+	align-items: flex-start;
+	margin-bottom: 10px;
+}
+
+.label {
+	width: 50px;
+}
+
+.forma div div input{
+	width: 700px;
+}
+
+.forma div div textarea{
+	width: 700px;
+}
+
+.main_question{
+	border: none;
+}
+
+.anser_section{
+	border-top: 5px solid gray;
+	border-bottom: 5px solid gray;
+	padding-bottom: 20px;
+}
+
+.answer textarea{
+	width: 100%;
+	margin-top: 20px;
+}
+
+.ask {
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+
+.forma {
+	margin-top: 20px;
+}
+
+.logi {
+	width: 100px;
+}
+
+.logpas{
+	width: 200px;
+	
+}
+
+.choose_photo{
+	width: 200px;
+	display: flex;
+	flex-direction: column;
+}
+
+.error{
+	color: red;
+}
+
+.choose_photo div img{
+	max-width: 150px;
+	max-height: 150px;
+	align-items: center;
+}
