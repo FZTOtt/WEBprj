@@ -1,2 +1,0 @@
-# WEBprj
-Project for TechPark
