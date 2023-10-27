@@ -1,192 +1,69 @@
-
-<!doctype html>
-<html lang="en" class="h-100">
-	<head>
-
-    
-
-		<!-- Bootstrap core CSS -->
-		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" 
-			rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" 
-			crossorigin="anonymous">
-		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" 
-			integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" 
-			crossorigin="anonymous"></script>
-		
-
-		<style>
-		.bd-placeholder-img {
-			font-size: 1.125rem;
-			text-anchor: middle;
-			-webkit-user-select: none;
-			-moz-user-select: none;
-			user-select: none;
-		}
-
-		@media (min-width: 768px) {
-			.bd-placeholder-img-lg {
-			font-size: 3.5rem;
-			}
-		}
-		</style>
-
-    
-    <!-- Custom styles for this template -->
-    	<link href="../static/css/main.css" rel="stylesheet">
-  	</head>
-	<body class="d-flex flex-column h-100">
-    
-<header>
-  <!-- Fixed navbar -->
-	<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="#">Bandshi</a>
-      
-      <div class="collapse navbar-collapse" id="navbarCollapse">
-        <ul class="navbar-nav me-auto mb-2 mb-md-0">
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Link</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-          </li>
-        </ul>
-        <form class="d-flex">
-          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-          <button class="btn btn-outline-success" type="submit">ASK</button>
-        </form>
-		<div class = "info-container">
-			<div class="avatar_photo">
-				<img src="../static/images/jason.jpg" alt="avatar" class="avatar-image">
-			</div>
-			<div class = "info">
-				<div class="name">
-					Mr. Sidky
-				</div>
-				<div>
-					<a href = "">settings</a>
-					<a href = "">log out</a>
-				</div>
-			</div>
+{% extends 'layout.html' %}
+{% block content %}
+	<h1>
+		Registration
+	</h1>
+	<p class = "error">
+		Error
+	</p>
+<div class = "forma">
+	<div>
+		<div class = "logi">
+			Login
 		</div>
-      </div>
-    </div>
-	</nav>
-</header>
-
-<!-- Begin page content -->
-<main class="flex-shrink-0">
-	<div class="container">
-		
-		<div class="row">
-			<div class="col-8">
-                <h1>
-                    Registration     
-                </h1>
-                <p class = "error">
-                    Error
-                </p>
-			<div class = "forma">
-				<div>
-					<div class = "logi">
-						Login
-					</div>
-					<div class = "logpas">
-						<input type ="text" placeholder="Enter login">
-					</div>
-				</div>
-				<div>
-					<div class = "logi">
-						Email
-					</div>
-					<div class = "logpas">
-						<input type ="password" placeholder="password">
-					</div>
-				</div>
-                <div>
-					<div class = "logi">
-						SidkyName
-					</div>
-					<div class = "logpas">
-						<input type ="password" placeholder="password">
-					</div>
-				</div>
-                <div>
-					<div class = "logi">
-						Password
-					</div>
-					<div class = "logpas">
-						<input type ="password" placeholder="password">
-					</div>
-				</div>
-                <div>
-					<div class = "logi">
-						Repeat password
-					</div>
-					<div class = "logpas">
-						<input type ="password" placeholder="password">
-					</div>
-				</div>
-                <div>
-					<div class = "logi">
-						Upload avatar
-					</div>
-					<div class = "logpas">
-						<input type ="file" placeholder="password">
-					</div>
-				</div>
-				
-				<div>
-					<div class = "logi">
-
-					</div>
-					<div>
-						<button class = "ask">Register</button>
-					</div>
-					
-				</div>
-			</div>
-			</div>
-			<div class="col-4">
-				<div class="row">
-					<h1>Popular tags</h1>
-					<div class="tags">
-						<span class="badge bg-dark">Cpp</span>
-						<span class="badge bg-secondary">C#</span>
-						<span class="badge bg-success">Java</span>
-						<span class="badge bg-primary">JavaScript</span>
-						<span class="badge bg-danger">Pascal</span>
-						<span class="badge bg-secondary">YoptaScript</span>
-					</div>
-					<h2 style="margin-top: 20px;">
-						Best sidkiers:
-					</h2>
-					<div class="users">
-						<p><a href = "">User1</a></p>
-						<p><a href = "">User1</a></p>
-						<p><a href = "">User1</a></p>
-						<p><a href = "">User1</a></p>
-						<p><a href = "">User1</a></p>
-						<p><a href = "">User1</a></p>
-					</div>
-				</div>
-			</div>
+		<div class = "logpas">
+			<input type ="text" placeholder="Enter login">
 		</div>
 	</div>
-</main>
+	<div>
+		<div class = "logi">
+			Email
+		</div>
+		<div class = "logpas">
+			<input type ="password" placeholder="password">
+		</div>
+	</div>
+	<div>
+		<div class = "logi">
+			SidkyName
+		</div>
+		<div class = "logpas">
+			<input type ="password" placeholder="password">
+		</div>
+	</div>
+	<div>
+		<div class = "logi">
+			Password
+		</div>
+		<div class = "logpas">
+			<input type ="password" placeholder="password">
+		</div>
+	</div>
+	<div>
+		<div class = "logi">
+			Repeat password
+		</div>
+		<div class = "logpas">
+			<input type ="password" placeholder="password">
+		</div>
+	</div>
+	<div>
+		<div class = "logi">
+			Upload avatar
+		</div>
+		<div class = "logpas">
+			<input type ="file" placeholder="password">
+		</div>
+	</div>
 
-<footer class="footer mt-auto py-3 bg-light">
-  <div class="container">
-    <span class="text-muted">Place sticky footer content here.</span>
-  </div>
-</footer>
+	<div>
+		<div class = "logi">
 
+		</div>
+		<div>
+			<button class = "ask">Register</button>
+		</div>
 
-    <script src="/docs/5.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-
-      
-  </body>
-</html>
+	</div>
+</div>
+{%endblock%}
