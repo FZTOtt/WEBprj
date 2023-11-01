@@ -139,9 +139,9 @@ header{
 }
 
 .anser_section{
-	border-top: 5px solid gray;
-	border-bottom: 5px solid gray;
-	padding-bottom: 20px;
+	border-top: 20px black;
+	border-bottom: 50px black;
+	padding-bottom: 30px;
 }
 
 .answer textarea{

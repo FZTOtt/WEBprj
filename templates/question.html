@@ -1,0 +1,26 @@
+{% extends 'layout.html' %}
+{% load static%}
+{% block content %}
+<div class="HQ">
+    <h1>
+        Question
+    </h1>
+    <a href = "">Hot questions</a>
+</div>
+{% include 'components/question-item.html'%}
+<div class = "anser_section"></div>
+{% for answer in answers%}
+	{% include 'components/answer-item.html' %}
+{% endfor %}
+
+	{% include 'components/puginatium.html'%}
+
+
+
+<div class = "answer">
+    <textarea rows = "20" type ="text" placeholder="How can I finish VK education?"></textarea>
+</div>
+<div>
+    <button class = "ask">Sidky!</button>
+</div>
+{% endblock %}
