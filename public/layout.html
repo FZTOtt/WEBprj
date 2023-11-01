@@ -56,7 +56,7 @@
         </ul>
         <form class="d-flex">
           <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-          <button class="btn btn-outline-success" type="submit">ASK</button>
+          <a class="navbar-brand" href="{% url 'ask' %}">ASK</a>
         </form>
 		<div class = "info-container">
 			<div class="avatar_photo">
@@ -67,7 +67,7 @@
 					Mr. Sidky
 				</div>
 				<div>
-					<a href = "">settings</a>
+					<a href = "{% url 'profile_settings' %}">settings</a>
 					<a href = "">log out</a>
 				</div>
 			</div>

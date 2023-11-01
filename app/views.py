@@ -24,3 +24,17 @@ def index(request):
 def question(request, question_id):
     item = QUESTIONS[question_id]
     return render(request, "question.html", {'question': item})
+
+
+def login(request):
+    return render(request, "login.html")
+
+def ask(request):
+    return render(request, 'ask.html')
+
+
+def settings(request):
+    return render(request, 'settings.html')
+
+def signup (request):
+    return render(request, 'signup.html')
