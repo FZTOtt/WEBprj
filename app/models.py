@@ -3,7 +3,14 @@ from django.db import models
 
 
 # Create your models here.
+class Profile(models.Model):
+    User_id = models.ForeignKey('User', related_name='id')
+    Name = models.CharField(max_length=256)
+    Profile_photo = models.ImageField()
+    About = models.CharField(max_length=2000)
 
+class Question(models.Model):
+    Question_id = models.
 
 class Book(models.Model):
     title = models.CharField(max_length=256)

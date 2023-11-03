@@ -25,14 +25,20 @@ def paginate(objects, page, per_page=5):
     paginator = Paginator(objects, per_page)
     #page_items = paginator.page(1).object_list
     return paginator.page(page)
+
+
+
 def index(request):
 
     page = request.GET.get('page', 1)
     try:
         page = int(page)
+
     except ValueError:
         return HttpResponseBadRequest()
-    return render(request, "index.html", {'questions': paginate(QUESTIONS, page)})
+    #paginator = Paginator(objects, per_page)
+    tmp = paginate (QUESTIONS, page)
+    return render(request, "index.html", {'questions': tmp, 'page_obj' : tmp})
 
 
 def question(request, question_id):
@@ -42,7 +48,8 @@ def question(request, question_id):
         page = int(page)
     except ValueError:
         return HttpResponseBadRequest()
-    return render(request, "question.html", {'question': item, 'answers' : paginate(ANSWERS, page)})
+    tmp = paginate(ANSWERS, page)
+    return render(request, "question.html", {'question': item, 'answers' : tmp, 'page_obj' : tmp})
     #return render(request, "question.html", {'question': item})
 
 
