@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'app'
+    "app.apps.AppConfig"
 ]
 
 MIDDLEWARE = [
@@ -52,7 +52,6 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'askme_zhidkov.urls'
 
-AUTH_USER_MODEL = 'app.User'
 
 TEMPLATES = [
     {
@@ -130,3 +129,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 STATICFILES_DIRS = [
     BASE_DIR / 'static'
 ]
+
+# AUTH_USER_MODEL = 'app.customUser'

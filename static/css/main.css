@@ -103,6 +103,7 @@ header{
 }
 
 .paginatium{
+
 	margin: 40px;
 }
 .paginatium button{
@@ -189,4 +190,8 @@ header{
 
 .current{
 
+}
+
+.pagination{
+	padding: 40px;
 }

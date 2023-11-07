@@ -2,6 +2,10 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import AbstractUser
+from django.contrib.contenttypes.models import ContentType
+from django.contrib.contenttypes.fields import GenericForeignKey
+from django.db.models import Sum
+from django.contrib.contenttypes.fields import GenericRelation
 
 # Create your models here.
 # class Profile(models.Model):
@@ -11,24 +15,49 @@ from django.contrib.auth.models import AbstractUser
 #     About = models.CharField(max_length=2000)
 
 
-class User(AbstractUser):
-    #avatar = models.ImageField(default=None, upload_to='static/main/upload/')
-    rating = models.IntegerField(default=0, verbose_name='User rating')
+# class customUser(AbstractUser):
+#     #avatar = models.ImageField(default=None, upload_to='static/main/upload/')
+#     rating = models.IntegerField(default=0, verbose_name='User rating')
 
-    # class Meta:
-    #     verbose_name = 'User'
-    #     verbose_name_plural = 'Users'
-    #
-    # def __str__(self):
-    #     return self.username
+class QuestionManager(models.Manager):
+    # def hottest(self):
+    #     return self.order_by()
+
+    def id(self, search_id):
+        return self.all().filter(id=search_id)
+    def newest(self):
+        return self.all().order_by('date').reverse()
+
+
+class LikeManager(models.Manager):
+    use_for_related_fields = True
+
+    def likes(self):
+        return self.get_queryset().filter(vote__gt=0)
+
+    def dislikes(self):
+        return self.get_queryset().filter(vote__lt=0)
+
+    def sum_rating(self):
+        return self.get_queryset().aggregate(Sum('vote')).get('vote__sum') or 0
+
 
 class Question(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=256)
     body = models.TextField()
-    tags = models.ManyToManyField('Tag', related_name='questions')
+    tags = models.ManyToManyField('Tag', related_name='questions', verbose_name='Tags')
     date = models.DateTimeField(default=timezone.now)
+    votes = GenericRelation('Like', related_query_name='questions')
     solved = models.BooleanField(default=False)
+    objects = QuestionManager()
+
+    class Meta:
+        verbose_name = 'Question'
+        verbose_name_plural = 'Questions'
+
+    def __str__(self):
+        return self.title
 
 
 class Answer(models.Model):
@@ -41,10 +70,31 @@ class Answer(models.Model):
 
 class Tag(models.Model):
     title = models.CharField(max_length=40, unique=True)
+    #rating = models.IntegerField(default=0)
+
+    def __str__(self):
+        return self.title
 
 
-#class Like(models.Model):
-#    user = models.ForeignKey(User, on_delete=models.CASCADE)
+class Like(models.Model):
+    LIKE = 1
+    DISLIKE = -1
+    TYPES = ((LIKE, 1), (DISLIKE, -1))
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    vote = models.SmallIntegerField(choices=TYPES, verbose_name='like')
+    content_type = models.ForeignKey(ContentType, default=None, on_delete=models.CASCADE)
+    content_object = GenericForeignKey()
+    objects = LikeManager()
+    object_id = models.PositiveIntegerField(default=-1)
+
+
+    class Meta:
+        verbose_name = 'Like'
+        verbose_name_plural = 'Likes'
+
+    # def __str__(self):
+    #     return self.user.username
 
 # class Book(models.Model):
 #     title = models.CharField(max_length=256)
