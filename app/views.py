@@ -47,12 +47,14 @@ def question(request, pk):
     item = Question.objects.id(int(pk)).first()
     if item is None:
         raise Http404
+    else:
+        answers = item.answers.hottest()
     page = request.GET.get('page', 1)
     try:
         page = int(page)
     except ValueError:
         return HttpResponseBadRequest()
-    tmp = paginate(ANSWERS, page)
+    tmp = paginate(answers, page)
     return render(request, "question.html", {'question': item, 'answers': tmp, 'page_obj': tmp})
     #return render(request, "question.html", {'question': item})
 

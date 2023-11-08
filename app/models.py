@@ -1,7 +1,7 @@
-from django.contrib.auth.models import User
+#from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, UserManager
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.db.models import Sum
@@ -15,9 +15,23 @@ from django.contrib.contenttypes.fields import GenericRelation
 #     About = models.CharField(max_length=2000)
 
 
-# class customUser(AbstractUser):
-#     #avatar = models.ImageField(default=None, upload_to='static/main/upload/')
-#     rating = models.IntegerField(default=0, verbose_name='User rating')
+class AbstractUserManager(UserManager):
+    def top_users(self):
+        return self.order_by("-rating")
+
+
+class User(AbstractUser):
+    #avatar = models.ImageField(default=None, upload_to='static/main/upload/')
+    rating = models.IntegerField(default=0, verbose_name='User rating')
+    objects = AbstractUserManager()
+
+    class Meta:
+        verbose_name = 'User'
+        verbose_name_plural = 'Users'
+
+    def __str__(self):
+        return self.username
+
 
 class QuestionManager(models.Manager):
     # def hottest(self):
@@ -25,8 +39,16 @@ class QuestionManager(models.Manager):
 
     def id(self, search_id):
         return self.all().filter(id=search_id)
+
     def newest(self):
         return self.all().order_by('date').reverse()
+    # def hottest(self):
+    #     return return self.all().order_by('rating').reverse()
+
+
+class AnswerManager(models.Manager):
+    def hottest(self):
+        return self.all().order_by('rating').reverse()
 
 
 class LikeManager(models.Manager):
@@ -42,35 +64,13 @@ class LikeManager(models.Manager):
         return self.get_queryset().aggregate(Sum('vote')).get('vote__sum') or 0
 
 
-class Question(models.Model):
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
-    title = models.CharField(max_length=256)
-    body = models.TextField()
-    tags = models.ManyToManyField('Tag', related_name='questions', verbose_name='Tags')
-    date = models.DateTimeField(default=timezone.now)
-    votes = GenericRelation('Like', related_query_name='questions')
-    solved = models.BooleanField(default=False)
-    objects = QuestionManager()
-
-    class Meta:
-        verbose_name = 'Question'
-        verbose_name_plural = 'Questions'
-
-    def __str__(self):
-        return self.title
-
-
-class Answer(models.Model):
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
-    date = models.DateField(default=timezone.now)
-    question = models.ForeignKey(Question, on_delete=models.CASCADE)
-    text = models.TextField()
-    status = models.BooleanField(default=False) #sidkier or not
-
-
 class Tag(models.Model):
     title = models.CharField(max_length=40, unique=True)
     #rating = models.IntegerField(default=0)
+
+    class Meta:
+        verbose_name = 'Tag'
+        verbose_name_plural = 'Tags'
 
     def __str__(self):
         return self.title
@@ -88,10 +88,47 @@ class Like(models.Model):
     objects = LikeManager()
     object_id = models.PositiveIntegerField(default=-1)
 
-
     class Meta:
         verbose_name = 'Like'
         verbose_name_plural = 'Likes'
+
+
+class Question(models.Model):
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    title = models.CharField(max_length=256)
+    body = models.TextField()
+    tags = models.ManyToManyField(Tag, related_name='questions', verbose_name='Tags')
+    date = models.DateTimeField(default=timezone.now)
+    votes = GenericRelation(Like, related_query_name='questions')
+    solved = models.BooleanField(default=False)
+    objects = QuestionManager()
+
+    class Meta:
+        verbose_name = 'Question'
+        verbose_name_plural = 'Questions'
+
+    def __str__(self):
+        return self.title
+
+
+class Answer(models.Model):
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    date = models.DateField(default=timezone.now)
+    question = models.ForeignKey(Question, related_name="answers", on_delete=models.CASCADE)
+    text = models.TextField()
+    status = models.BooleanField(default=False) #sidkier or not
+    rating = models.IntegerField(default=0, null=False, verbose_name='Rating')
+    type = 'answer'
+    objects = AnswerManager()
+
+    def __str__(self):
+        return self.text
+
+
+
+
+
+
 
     # def __str__(self):
     #     return self.user.username
