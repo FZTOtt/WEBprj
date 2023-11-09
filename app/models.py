@@ -42,8 +42,9 @@ class QuestionManager(models.Manager):
 
     def newest(self):
         return self.all().order_by('date').reverse()
-    # def hottest(self):
-    #     return return self.all().order_by('rating').reverse()
+
+    def hottest(self):
+        return self.all().order_by("rating").reverse()
 
 
 class AnswerManager(models.Manager):
@@ -64,10 +65,16 @@ class LikeManager(models.Manager):
         return self.get_queryset().aggregate(Sum('vote')).get('vote__sum') or 0
 
 
+class TagManager(models.Manager):
+    def top_tags(self):
+        return self.order_by("-rating")
+
+    #def
+
 class Tag(models.Model):
     title = models.CharField(max_length=40, unique=True)
-    #rating = models.IntegerField(default=0)
-
+    rating = models.IntegerField(default=0)
+    objects = TagManager()
     class Meta:
         verbose_name = 'Tag'
         verbose_name_plural = 'Tags'
@@ -97,10 +104,11 @@ class Question(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=256)
     body = models.TextField()
-    tags = models.ManyToManyField(Tag, related_name='questions', verbose_name='Tags')
+    tags = models.ManyToManyField(Tag, related_name='questions', verbose_name='Tags', blank=True)
     date = models.DateTimeField(default=timezone.now)
     votes = GenericRelation(Like, related_query_name='questions')
     solved = models.BooleanField(default=False)
+    rating = models.IntegerField(default=0, null=False, verbose_name='Rating')
     objects = QuestionManager()
 
     class Meta:

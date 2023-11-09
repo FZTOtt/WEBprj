@@ -14,14 +14,42 @@ from django.http import Http404
 #     ]
 #
 #
-ANSWERS = [
-        {
-        'id': i,
-        'title': f'Answer {i}',
-        'content': f'Let me help you {i}'
-    } for i in range (20)
-    ]
+# ANSWERS = [
+#         {
+#         'id': i,
+#         'title': f'Answer {i}',
+#         'content': f'Let me help you {i}'
+#     } for i in range (20)
+#     ]
 
+
+def tag(request, tag_name):
+    tag_questions = []
+    for question in Question.objects.all():
+        for tag in question.tags.all():
+            if tag.title == tag_name:
+                tag_questions.append(question)
+
+    page = request.GET.get('page', 1)
+    try:
+        page = int(page)
+
+    except ValueError:
+        return HttpResponseBadRequest()
+    tmp = paginate(tag_questions, page)
+    return render(request, "index.html", {'questions': tmp, 'page_obj': tmp})
+
+
+def hot(request):
+    page = request.GET.get('page', 1)
+    try:
+        page = int(page)
+
+    except ValueError:
+        return HttpResponseBadRequest()
+    questions = Question.objects.hottest()
+    tmp = paginate(questions, page)
+    return render(request, "index.html", {'questions': tmp, 'page_obj': tmp})
 
 def paginate(objects, page, per_page=5):
     paginator = Paginator(objects, per_page)
@@ -40,7 +68,7 @@ def index(request):
         return HttpResponseBadRequest()
     #paginator = Paginator(objects, per_page)
     tmp = paginate (Question.objects.newest(), page)
-    return render(request, "index.html", {'questions': tmp, 'page_obj' : tmp})
+    return render(request, "index.html", {'questions': tmp, 'page_obj': tmp})
 
 
 def question(request, pk):
