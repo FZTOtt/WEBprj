@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from django.core.paginator import Paginator
-from django.http import HttpResponseBadRequest
+from django.http import HttpResponseBadRequest, HttpResponse
+from django.views import View
+import json
 from .models import *
 from django.http import Http404
 
@@ -99,3 +101,42 @@ def settings(request):
 
 def signup (request):
     return render(request, 'signup.html')
+
+class VotesView(View):
+    model = None
+    vote_type = None
+
+    def post(self, request, pk):
+        obj = self.model.objects.get(pk=pk)
+        try:
+            like_dislike = Like.objects.get(content_type=ContentType.objects.get_for_model(obj),
+                                            object_id=obj.id,
+                                            user=request.user)
+
+            if like_dislike.vote is not self.vote_type:
+                like_dislike.vote = self.vote_type
+                obj.rate += 2*self.vote_type
+                obj.author.rank += 2*self.vote_type
+                like_dislike.save(update_fields=['vote'])
+                result = True
+            else:
+                obj.rate -= self.vote_type
+                like_dislike.delete()
+                result = False
+        except Like.DoesNotExist:
+            obj.votes.create(user=request.user, vote=self.vote_type)
+            obj.rate += self.vote_type
+            obj.author.rank += self.vote_type
+            result = True
+
+        obj.save()
+        obj.author.save()
+        return HttpResponse(
+            json.dumps({
+                "result": result,
+                "like_count": obj.votes.likes().count(),
+                "dislike_count": obj.votes.dislikes().count(),
+                "sum_rating": obj.votes.sum_rating()
+            }),
+            content_type="application/json"
+        )

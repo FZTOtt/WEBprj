@@ -1,0 +1,7 @@
+{% load static %}
+<div>
+    Tags:
+    {% for tags in question.tags.all %}
+        <a href="{% url 'tag' tag_name=tags.title %}" class="tag-button badge rounded-pill bg-danger">{{ tags.title }}</a>
+    {% endfor %}
+</div>

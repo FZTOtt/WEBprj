@@ -4,7 +4,7 @@ from django.utils import timezone
 from django.contrib.auth.models import AbstractUser, UserManager
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
-from django.db.models import Sum
+from django.db.models import Sum, Count
 from django.contrib.contenttypes.fields import GenericRelation
 
 # Create your models here.
@@ -21,7 +21,7 @@ class AbstractUserManager(UserManager):
 
 
 class User(AbstractUser):
-    #avatar = models.ImageField(default=None, upload_to='static/main/upload/')
+    avatar = models.ImageField(default="static/images/dYAAAgHRP2A-1920.jpg", upload_to='static/images/load')
     rating = models.IntegerField(default=0, verbose_name='User rating')
     objects = AbstractUserManager()
 
@@ -44,7 +44,9 @@ class QuestionManager(models.Manager):
         return self.all().order_by('date').reverse()
 
     def hottest(self):
-        return self.all().order_by("rating").reverse()
+        # return self.all().order_by("rating").reverse()
+        return self.annotate(sum_likes=Count('votes')).order_by('sum_likes').reverse()
+
 
 
 class AnswerManager(models.Manager):
@@ -92,9 +94,8 @@ class Like(models.Model):
     vote = models.SmallIntegerField(choices=TYPES, verbose_name='like')
     content_type = models.ForeignKey(ContentType, default=None, on_delete=models.CASCADE)
     content_object = GenericForeignKey()
-    objects = LikeManager()
     object_id = models.PositiveIntegerField(default=-1)
-
+    objects = LikeManager()
     class Meta:
         verbose_name = 'Like'
         verbose_name_plural = 'Likes'
@@ -124,6 +125,7 @@ class Answer(models.Model):
     date = models.DateField(default=timezone.now)
     question = models.ForeignKey(Question, related_name="answers", on_delete=models.CASCADE)
     text = models.TextField()
+    votes = GenericRelation(Like, related_query_name='answers')
     status = models.BooleanField(default=False) #sidkier or not
     rating = models.IntegerField(default=0, null=False, verbose_name='Rating')
     type = 'answer'
