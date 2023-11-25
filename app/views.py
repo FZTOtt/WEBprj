@@ -1,8 +1,12 @@
-from django.shortcuts import render
-from django.core.paginator import Paginator
+from django.contrib.auth import authenticate, login, logout
+from django.shortcuts import render, redirect
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import HttpResponseBadRequest, HttpResponse
+from django.urls import reverse
 from django.views import View
 import json
+
+from .forms import LogInForm
 from .models import *
 from django.http import Http404
 
@@ -26,50 +30,53 @@ from django.http import Http404
 
 
 def tag(request, tag_name):
-    tag_questions = []
-    for question in Question.objects.all():
-        for tag in question.tags.all():
-            if tag.title == tag_name:
-                tag_questions.append(question)
+    question = Question.objects.all()
+    question = question.filter(tags__title=tag_name)
+    # for question in Question.objects.all():
+    #     for tag in question.tags.all():
+    #         if tag.title == tag_name:
+    #             tag_questions.append(question)
 
-    page = request.GET.get('page', 1)
-    try:
-        page = int(page)
 
-    except ValueError:
-        return HttpResponseBadRequest()
-    tmp = paginate(tag_questions, page)
+    tmp = paginate(question, request)
     return render(request, "index.html", {'questions': tmp, 'page_obj': tmp})
 
 
 def hot(request):
     page = request.GET.get('page', 1)
-    try:
-        page = int(page)
-
-    except ValueError:
-        return HttpResponseBadRequest()
     questions = Question.objects.hottest()
-    tmp = paginate(questions, page)
+    tmp = paginate(questions, request)
+    if tmp == HttpResponseBadRequest():
+        raise Http404
     return render(request, "index.html", {'questions': tmp, 'page_obj': tmp})
 
-def paginate(objects, page, per_page=5):
+
+# objects, request, per_page
+def paginate(objects, request, per_page=5):
     paginator = Paginator(objects, per_page)
+    page_number = request.GET.get('page')
+
+    try:
+        page_obj = paginator.get_page(page_number)
+    except PageNotAnInteger:
+        page_obj = paginator.get_page(1)
+    except EmptyPage:
+        page_obj = paginator.get_page(paginator.num_pages)
+
+    return page_obj
+    # paginator = Paginator(objects, per_page)
     #page_items = paginator.page(1).object_list
-    return paginator.page(page)
+    # return paginator.page(page)
 
 
 
 def index(request):
 
     page = request.GET.get('page', 1)
-    try:
-        page = int(page)
-
-    except ValueError:
-        return HttpResponseBadRequest()
     #paginator = Paginator(objects, per_page)
-    tmp = paginate (Question.objects.newest(), page)
+    tmp = paginate (Question.objects.newest(), request)
+    if tmp == HttpResponseBadRequest():
+        raise Http404
     return render(request, "index.html", {'questions': tmp, 'page_obj': tmp})
 
 
@@ -79,18 +86,33 @@ def question(request, pk):
         raise Http404
     else:
         answers = item.answers.hottest()
-    page = request.GET.get('page', 1)
-    try:
-        page = int(page)
-    except ValueError:
-        return HttpResponseBadRequest()
-    tmp = paginate(answers, page)
+    tmp = paginate(answers, request)
     return render(request, "question.html", {'question': item, 'answers': tmp, 'page_obj': tmp})
     #return render(request, "question.html", {'question': item})
 
 
-def login(request):
-    return render(request, "login.html")
+def log_in(request):
+    print(request.GET)
+    print(request.POST)
+    if request.method == 'GET':
+        login_form = LogInForm()
+    if request.method == 'POST':
+        login_form = LogInForm(request.POST)
+        if login_form.is_valid():
+            user = authenticate(request, **login_form.cleaned_data)
+            print (user)
+
+        if user is not None:
+            login(request, user)
+            print('success')
+            return redirect(reverse('index'))
+    return render(request, "login.html", context={"form": login_form})
+
+def log_out(request):
+    if not request.user.is_authenticated:
+        raise Http404
+    logout(request)
+    return redirect(reverse('index'))
 
 def ask(request):
     return render(request, 'ask.html')

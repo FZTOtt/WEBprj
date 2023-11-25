@@ -44,8 +44,9 @@ class QuestionManager(models.Manager):
         return self.all().order_by('date').reverse()
 
     def hottest(self):
-        # return self.all().order_by("rating").reverse()
         return self.annotate(sum_likes=Count('votes')).order_by('sum_likes').reverse()
+        # print(qw.query)
+        # return self.all().order_by("rating").reverse()
 
 
 
@@ -91,7 +92,7 @@ class Like(models.Model):
     TYPES = ((LIKE, 1), (DISLIKE, -1))
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    vote = models.SmallIntegerField(choices=TYPES, verbose_name='like')
+    vote = models.SmallIntegerField(choices=TYPES, verbose_name='likes')
     content_type = models.ForeignKey(ContentType, default=None, on_delete=models.CASCADE)
     content_object = GenericForeignKey()
     object_id = models.PositiveIntegerField(default=-1)
@@ -99,6 +100,7 @@ class Like(models.Model):
     class Meta:
         verbose_name = 'Like'
         verbose_name_plural = 'Likes'
+        unique_together = ['user', 'content_type', 'object_id']
 
 
 class Question(models.Model):

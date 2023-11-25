@@ -1,40 +1,34 @@
 {% extends 'layout.html' %}
 {% block content %}
+{% load django_bootstrap5 %}
 <h1>
 	Log in
 </h1>
-<p class = "error">
-	Error
-</p>
-<div class = "forma">
-<div>
-	<div class = "logi">
-		Login
-	</div>
-	<div class = "logpas">
-		<input type ="text" placeholder="Enter login">
-	</div>
-</div>
-<div>
-	<div class = "logi">
-		Password
-	</div>
-	<div class = "logpas">
-		<input type ="password" placeholder="password">
-	</div>
-</div>
+<!--<div class="col-8">-->
+<form method="post">
+    {% bootstrap_form form %}
+<!--  <div class="mb-3">-->
+<!--    <label for="exampleInputEmail1" class="form-label">Username</label>-->
+<!--    <input type="text" name="username" class="form-control" id="exampleInputEmail1" aria-describedby="usernameHelp">-->
+<!--    <div id="usernameHelp" class="form-text">We'll never share your email with anyone else.</div>-->
+<!--  </div>-->
+<!--  <div class="mb-3">-->
+<!--    <label for="exampleInputPassword1" class="form-label">Password</label>-->
+<!--    <input type="password" name="password" class="form-control" id="exampleInputPassword1">-->
+<!--  </div>-->
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+<!--<div>-->
+<!--	<div class = "logi">-->
 
-<div>
-	<div class = "logi">
+<!--	</div>-->
+<!--	<div>-->
+<!--		<form action = '{% url 'index' %}'>-->
+<!--		<button class = "ask">Log in</button>-->
+<!--		</form>-->
+<!--	</div>-->
 
-	</div>
-	<div>
-		<form action = '{% url 'index' %}'>
-		<button class = "ask">Log in</button>
-		</form>
-	</div>
-
-</div>
+<!--</div>-->
 <div>
 	<div class = "logi">
 
@@ -44,5 +38,5 @@
 	</div>
 
 </div>
-</div>
+<!--</div>-->
 {% endblock %}
