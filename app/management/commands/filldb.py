@@ -13,10 +13,10 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         ratio = kwargs['ratio']
-        # self.create_users(ratio)
-        # self.create_tags(ratio)
-        # self.create_questions(10 * ratio)
-        # self.create_answers(100 * ratio)
+        self.create_users(ratio)
+        self.create_tags(ratio)
+        self.create_questions(10 * ratio)
+        self.create_answers(100 * ratio)
         self.create_like(200 * ratio)
 
     def create_users(self, ratio):
@@ -78,23 +78,23 @@ class Command(BaseCommand):
         user = User.objects.all()
         print('Users selected')
         count = 0
-        # for question in Question.objects.all():
-        #     for i in range(f().random_int(min=0, max=4)):
-        #         # if count > ratio / 2:
-        #         #     continue
-        #         # else:
-        #             like = Like()
-        #             like.user = random.choice(user)
-        #             like.vote = 1
-        #             like.content_object = question
-        #             if Like.objects.filter(user_id=like.user.pk, content_type_id=8, object_id=question.pk).exists():
-        #                 print('like is exist')
-        #                 continue
-        #             else:
-        #                 like.save()
-        #             count += count
-        #     print(f'save question{question.title}')
-        #     question.save()
+        for question in Question.objects.all():
+            for i in range(f().random_int(min=0, max=4)):
+                # if count > ratio / 2:
+                #     continue
+                # else:
+                    like = Like()
+                    like.user = random.choice(user)
+                    like.vote = 1
+                    like.content_object = question
+                    if Like.objects.filter(user_id=like.user.pk, content_type_id=8, object_id=question.pk).exists():
+                        print('like is exist')
+                        continue
+                    else:
+                        like.save()
+                    count += count
+            print(f'save question{question.title}')
+            question.save()
 
         count = 0
         for answer in Answer.objects.all():

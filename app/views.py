@@ -1,10 +1,13 @@
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import HttpResponseBadRequest, HttpResponse
 from django.urls import reverse
 from django.views import View
 import json
+
+from django.views.decorators.csrf import csrf_protect
 
 from .forms import LogInForm
 from .models import *
@@ -91,23 +94,30 @@ def question(request, pk):
     #return render(request, "question.html", {'question': item})
 
 
+@csrf_protect
 def log_in(request):
     print(request.GET)
     print(request.POST)
     if request.method == 'GET':
         login_form = LogInForm()
     if request.method == 'POST':
+        print("POST")
         login_form = LogInForm(request.POST)
         if login_form.is_valid():
             user = authenticate(request, **login_form.cleaned_data)
             print (user)
 
-        if user is not None:
-            login(request, user)
-            print('success')
-            return redirect(reverse('index'))
+            if user is not None:
+                login(request, user)
+                print('success')
+                return redirect(request.GET.get('continue', '/'))
+            else:
+                login_form.add_error(None, "User doesn't exist or wrong password")
+                login_form.add_error("username","")
+                login_form.add_error("password", "")
     return render(request, "login.html", context={"form": login_form})
 
+@login_required(login_url='login/', redirect_field_name='continue')
 def log_out(request):
     if not request.user.is_authenticated:
         raise Http404
