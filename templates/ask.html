@@ -1,43 +1,12 @@
 {% extends 'layout.html' %}
 {% block content %}
+{% load django_bootstrap5 %}
 <h1>
 	New Question
 </h1>
-<div class = "forma">
-
-	<div>
-		<div class = "label">
-		Title
-		</div>
-	<div>
-		<input type ="text" placeholder="Name your question to find best sidkies!">
-	</div>
-</div>
-<div>
-	<div class = "label">
-		Text
-	</div>
-	<div>
-		<textarea rows = "20" type ="text" placeholder="How can I finish VK education?"></textarea>
-	</div>
-</div>
-
-<div>
-	<div class = "label">
-		Tags
-	</div>
-	<div>
-		<input type ="text" placeholder="VK, school">
-	</div>
-</div>
-<div>
-	<div class = "label">
-
-	</div>
-	<div>
-		<button class = "ask">ASK</button>
-	</div>
-
-</div>
-</div>
+<form method="post">
+	{% csrf_token %}
+    {% bootstrap_form form %}
+	<button type="submit" class="btn btn-primary">Submit</button>
+</form>
 {% endblock %}

@@ -21,7 +21,7 @@ class AbstractUserManager(UserManager):
 
 
 class User(AbstractUser):
-    avatar = models.ImageField(default="static/images/dYAAAgHRP2A-1920.jpg", upload_to='static/images/load')
+    avatar = models.ImageField(default="load/dYAAAgHRP2A-1920.jpg", upload_to='load')
     rating = models.IntegerField(default=0, verbose_name='User rating')
     objects = AbstractUserManager()
 
@@ -128,51 +128,19 @@ class Answer(models.Model):
     question = models.ForeignKey(Question, related_name="answers", on_delete=models.CASCADE)
     text = models.TextField()
     votes = GenericRelation(Like, related_query_name='answers')
-    status = models.BooleanField(default=False) #sidkier or not
+    status = models.BooleanField(default=False)
     rating = models.IntegerField(default=0, null=False, verbose_name='Rating')
     type = 'answer'
     objects = AnswerManager()
 
+    def toggle_status(self):
+        # self.status = not self.status
+        print ('toggle')
+        if self.status:
+            self.status = False
+        else:
+            self.status = True
+        self.save()
+
     def __str__(self):
         return self.text
-
-
-
-
-
-
-
-    # def __str__(self):
-    #     return self.user.username
-
-# class Book(models.Model):
-#     title = models.CharField(max_length=256)
-#     author = models.ForeignKey('Author', max_length=256, on_delete=models.PROTECT)
-#     date_written = models.DateField(null=True, blank=True)
-#     genre = models.ManyToManyField('Genre', related_name='books')
-#
-#
-# class Author(models.Model):
-#     name = models.CharField(max_length=256)
-#     surname = models.CharField(max_length=256)
-#     birth_date = models.DateField()
-#     death_date = models.DateField(null=True, blank=True)
-#     is_deleted = models.BooleanField(default=False)
-#
-#
-# class Genre(models.Model):
-#     name = models.CharField(max_length=256)
-#
-#
-# class BookInstance(models.Model):
-#     book = models.ForeignKey('Book', on_delete=models.PROTECT)
-#     user = models.ForeignKey(User,on_delete=models.PROTECT)
-#
-#     STATUS_CHOICES = (
-#         ('m', 'Maintenance'),
-#         ('a', 'Avaible'),
-#         ('t', 'Taken'),
-#     )
-#     status = models.CharField(max_length=1, choices=STATUS_CHOICES, default='m')
-#
-#     due_date = models.DateField()

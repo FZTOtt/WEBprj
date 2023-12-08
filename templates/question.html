@@ -1,6 +1,7 @@
 {% extends 'layout.html' %}
 {% load static%}
 {% block content %}
+{% load django_bootstrap5 %}
 <div class="HQ">
     <h1>
         Question
@@ -16,11 +17,9 @@
 	{% include 'components/puginatium.html'%}
 
 
-
-<div class = "answer">
-    <textarea rows = "20" type ="text" placeholder="How can I finish VK education?"></textarea>
-</div>
-<div>
-    <button class = "ask">Sidky!</button>
-</div>
+<form method="post">
+    {% csrf_token %}
+    {% bootstrap_form form %}
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
 {% endblock %}

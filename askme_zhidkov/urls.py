@@ -14,34 +14,12 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.urls import re_path as url
-from django.contrib import admin
-from django.contrib.auth.decorators import login_required
-from django.urls import path
-from app.models import *
-from app import views
+
+from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
-    path('', views.index, name='index'),
-    path('question/<int:pk>', views.question, name='question'),
-    path('login/', views.log_in, name='log_in'),
-    path('logout', views.log_out, name='logout'),
-    path('ask', views.ask, name='ask'),
-    path('settings', views.settings, name='profile_settings'),
-    path('signup', views.signup, name='signup'),
-    path('admin/', admin.site.urls),
-    path('hot', views.hot, name='hot'),
-    path('tag/<str:tag_name>', views.tag, name='tag'),
-    url(r'^question/(?P<pk>\d+)/like/$',
-        login_required(views.VotesView.as_view(model=Question, vote_type=Like.LIKE)),
-        name='question_like'),
-    url(r'^question/(?P<pk>\d+)/dislike/$',
-        login_required(views.VotesView.as_view(model=Question, vote_type=Like.DISLIKE)),
-        name='question_dislike'),
-    url(r'^answer/(?P<pk>\d+)/like/$',
-        login_required(views.VotesView.as_view(model=Answer, vote_type=Like.LIKE)),
-        name='answer_like'),
-    url(r'^answer/(?P<pk>\d+)/dislike/$',
-        login_required(views.VotesView.as_view(model=Answer, vote_type=Like.DISLIKE)),
-        name='answer_dislike'),
+    path('', include('app.urls'))
 ]
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

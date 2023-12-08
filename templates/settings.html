@@ -1,54 +1,66 @@
 {% extends 'layout.html' %}
 {% block content %}
+{% load django_bootstrap5 %}
 	<h1>
-		Registration
+		Settings
 	</h1>
 
-<div class = "forma">
-	<div>
-		<div class = "logi">
-			Login
+<form method="post" enctype="multipart/form-data">
+	{% csrf_token %}
+    {% bootstrap_form form %}
+	{%if request.user.avatar%}
+		<div style="width: 300px">
+			<img src="{{request.user.avatar.url}}" alt="Profile avatar" class="w-100" />
 		</div>
-		<div class = "logpas">
-			<input type ="text" placeholder="Enter login">
-		</div>
-	</div>
-	<div>
-		<div class = "logi">
-			Email
-		</div>
-		<div class = "logpas">
-			<input type ="password" placeholder="password">
-		</div>
-	</div>
-	<div>
-		<div class = "logi">
-			SidkyName
-		</div>
-		<div class = "logpas">
-			<input type ="password" placeholder="password">
-		</div>
-	</div>
-	<div>
-		<div class = "logi">
-			Upload avatar
-		</div>
-		<div class = "choose_photo">
-			<div>
-				<img src="../static/images/jason.jpg" alt="avatar">
-			</div>
-			<input type ="file" placeholder="password">
-		</div>
-	</div>
+	{%endif%}
 
-	<div>
-		<div class = "logi">
-
-		</div>
-		<div>
-			<button class = "ask">Save</button>
-		</div>
-
-	</div>
-</div>
+		<button type="submit" class="btn btn-primary">Submit</button>
+</form>
 {% endblock %}
+<!--<div class = "forma">-->
+<!--	<div>-->
+<!--		<div class = "logi">-->
+<!--			Login-->
+<!--		</div>-->
+<!--		<div class = "logpas">-->
+<!--			<input type ="text" placeholder="Enter login">-->
+<!--		</div>-->
+<!--	</div>-->
+<!--	<div>-->
+<!--		<div class = "logi">-->
+<!--			Email-->
+<!--		</div>-->
+<!--		<div class = "logpas">-->
+<!--			<input type ="password" placeholder="password">-->
+<!--		</div>-->
+<!--	</div>-->
+<!--	<div>-->
+<!--		<div class = "logi">-->
+<!--			SidkyName-->
+<!--		</div>-->
+<!--		<div class = "logpas">-->
+<!--			<input type ="password" placeholder="password">-->
+<!--		</div>-->
+<!--	</div>-->
+<!--	<div>-->
+<!--		<div class = "logi">-->
+<!--			Upload avatar-->
+<!--		</div>-->
+<!--		<div class = "choose_photo">-->
+<!--			<div>-->
+<!--				<img src="../static/images/jason.jpg" alt="avatar">-->
+<!--			</div>-->
+<!--			<input type ="file" placeholder="password">-->
+<!--		</div>-->
+<!--	</div>-->
+
+<!--	<div>-->
+<!--		<div class = "logi">-->
+
+<!--		</div>-->
+<!--		<div>-->
+<!--			<button class = "ask">Save</button>-->
+<!--		</div>-->
+
+<!--	</div>-->
+<!--</div>-->

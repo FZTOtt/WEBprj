@@ -1,69 +1,13 @@
 {% extends 'layout.html' %}
 {% block content %}
+{% load django_bootstrap5 %}
 	<h1>
 		Registration
 	</h1>
-	<p class = "error">
-		Error
-	</p>
-<div class = "forma">
-	<div>
-		<div class = "logi">
-			Login
-		</div>
-		<div class = "logpas">
-			<input type ="text" placeholder="Enter login">
-		</div>
-	</div>
-	<div>
-		<div class = "logi">
-			Email
-		</div>
-		<div class = "logpas">
-			<input type ="password" placeholder="password">
-		</div>
-	</div>
-	<div>
-		<div class = "logi">
-			SidkyName
-		</div>
-		<div class = "logpas">
-			<input type ="password" placeholder="password">
-		</div>
-	</div>
-	<div>
-		<div class = "logi">
-			Password
-		</div>
-		<div class = "logpas">
-			<input type ="password" placeholder="password">
-		</div>
-	</div>
-	<div>
-		<div class = "logi">
-			Repeat password
-		</div>
-		<div class = "logpas">
-			<input type ="password" placeholder="password">
-		</div>
-	</div>
-	<div>
-		<div class = "logi">
-			Upload avatar
-		</div>
-		<div class = "logpas">
-			<input type ="file" placeholder="password">
-		</div>
-	</div>
+<form method="post">
+	{% csrf_token %}
+	{% bootstrap_form form %}
+	<button type="submit" class="btn btn-primary">Submit</button>
+</form>
 
-	<div>
-		<div class = "logi">
-
-		</div>
-		<div>
-			<button class = "ask">Register</button>
-		</div>
-
-	</div>
-</div>
 {%endblock%}
